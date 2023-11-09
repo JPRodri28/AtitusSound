@@ -30,4 +30,5 @@ public class PlaylistController extends GenericController<PlaylistEntity, Playli
 	public GenericService<PlaylistEntity> getService() {
 		return playlistService;
 	}
+	
 }

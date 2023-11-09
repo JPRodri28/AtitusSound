@@ -47,11 +47,11 @@ public interface GenericService<TEntidade extends GenericEntity> {
 		return getRespository().findByNameContainingIgnoreCase(pageable, name);
 		
 	}
-	default void validatefindById(UUID uuid) throws Exception{
+	default void validateFindById(UUID uuid) throws Exception{
 		
 	}
 	default Optional<TEntidade> findById(UUID uuid) throws Exception {
-		validatefindById(uuid);
+		validateFindById(uuid);
 		return getRespository().findById(uuid);	
 	}
 	

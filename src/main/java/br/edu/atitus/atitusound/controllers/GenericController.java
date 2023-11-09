@@ -1,6 +1,7 @@
 package br.edu.atitus.atitusound.controllers;
 
 import java.util.List;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,8 +21,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+
 import br.edu.atitus.atitusound.entities.GenericEntity;
 import br.edu.atitus.atitusound.services.GenericService;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+@ApiResponses(value = {
+		@ApiResponse(responseCode = "400", description = "ERRO DE VALIDAÇÃO OU REQUISIÇÃO INVÁLIDA", content = @Content, headers = @Header(name = "error", description = "Descrição do erro", schema = @Schema(implementation = String.class))),
+		@ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content),
+		@ApiResponse(responseCode = "403", description = "FORBIDOEN", content = @Content)
+})
 
 public abstract class GenericController<TEntidade extends GenericEntity, TDto> {
 	public abstract GenericService<TEntidade> getService(); 
@@ -41,6 +54,8 @@ public abstract class GenericController<TEntidade extends GenericEntity, TDto> {
 			return ResponseEntity.ok(entidade.get());
 	}
 	@GetMapping
+	@ApiResponse(responseCode = "200", description = "OK", content = @Content)
+
 	public ResponseEntity<Page<List<TEntidade>>> get(@PageableDefault(page = 0, size = 10,sort = "name", direction = Direction.ASC) Pageable pageable,@RequestParam String name){
 		Page<List<TEntidade>> lista;
 		try {
@@ -52,6 +67,8 @@ public abstract class GenericController<TEntidade extends GenericEntity, TDto> {
 	}
 	
 	@PostMapping
+	@ApiResponse(responseCode = "201", description = "REGISTRO CRIADO COM SUCESSO!", content = @Content)
+
 	public ResponseEntity<TEntidade> post(@RequestBody TDto dto){
 		TEntidade entidade = convertDTO2Entety(dto);
 		try {
